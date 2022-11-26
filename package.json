@@ -1,0 +1,35 @@
+{
+	"name": "your-investor",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"prettier": "prettier -l **/*.ts **/*.tsx **/*.json **/*.html",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@vanilla-extract/css": "^1.9.2",
+		"@vanilla-extract/dynamic": "^2.0.3",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "^6.4.3"
+	},
+	"devDependencies": {
+		"@types/react": "^18.0.24",
+		"@types/react-dom": "^18.0.8",
+		"@typescript-eslint/eslint-plugin": "^5.44.0",
+		"@typescript-eslint/parser": "^5.44.0",
+		"@vanilla-extract/vite-plugin": "^3.7.0",
+		"@vitejs/plugin-react": "^2.2.0",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-react": "^7.31.11",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"prettier": "^2.8.0",
+		"typescript": "^4.6.4",
+		"vite": "^3.2.3"
+	}
+}
