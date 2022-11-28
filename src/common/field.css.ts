@@ -30,4 +30,5 @@ export const button = style({
 	color: "#fff",
 	borderRadius: 24,
 	border: "none",
+	cursor: "pointer",
 });

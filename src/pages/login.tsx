@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	CheckboxInput,
@@ -19,6 +19,18 @@ const USER = "user" as const;
 
 type LoginMethod = typeof DNI | typeof NIF | typeof PASSPORT | typeof USER;
 
+const useRedirectToDashboardWhenLoggedIn = () => {
+	const navigate = useNavigate();
+	const { authorization } = useSessionContext();
+	useEffect(() => {
+		if (authorization) {
+			navigate(dashboard, {
+				replace: true,
+			});
+		}
+	}, [authorization, navigate]);
+};
+
 type State = {
 	method: LoginMethod;
 	id: string;
@@ -30,7 +42,6 @@ type State = {
 
 export const Login = () => {
 	const { authorize } = useSessionContext();
-	const navigate = useNavigate();
 	const [state, setState] = useState<State>({
 		method: DNI,
 		id: "",
@@ -39,16 +50,13 @@ export const Login = () => {
 		isLoading: false,
 	});
 
+	useRedirectToDashboardWhenLoggedIn();
+
 	const onSubmit = useCallback(async () => {
 		setState({ ...state, isLoading: true });
 		await wait(1_000);
 		authorize("authorization bearer token");
-		setState({ ...state, isLoading: false });
-		await wait(0); // Let the state reach the context before navigating
-		navigate(dashboard, {
-			replace: true,
-		});
-	}, [authorize, navigate, state]);
+	}, [authorize, state]);
 
 	return (
 		<ResponsiveLayout>
