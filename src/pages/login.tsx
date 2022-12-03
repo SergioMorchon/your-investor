@@ -9,30 +9,23 @@ import {
 } from "../common/fields";
 import { ResponsiveLayout, Stack } from "../common/layout";
 import { dashboard } from "../paths";
-import { useSessionContext } from "../session-context";
-import { wait } from "../utils";
-
-const DNI = "dni" as const;
-const NIF = "nif" as const;
-const PASSPORT = "passport" as const;
-const USER = "user" as const;
-
-type LoginMethod = typeof DNI | typeof NIF | typeof PASSPORT | typeof USER;
+import { useLoginContext } from "../login-context";
+import * as ApiUsers from "../api/users";
 
 const useRedirectToDashboardWhenLoggedIn = () => {
 	const navigate = useNavigate();
-	const { authorization } = useSessionContext();
+	const { completedLogin: loginResponse } = useLoginContext();
 	useEffect(() => {
-		if (authorization) {
+		if (loginResponse) {
 			navigate(dashboard, {
 				replace: true,
 			});
 		}
-	}, [authorization, navigate]);
+	}, [loginResponse, navigate]);
 };
 
 type State = {
-	method: LoginMethod;
+	method: ApiUsers.LoginType;
 	id: string;
 	password: string;
 	remember: boolean;
@@ -41,9 +34,9 @@ type State = {
 };
 
 export const Login = () => {
-	const { authorize } = useSessionContext();
+	const { setCompletedLogin: setLoginResponse } = useLoginContext();
 	const [state, setState] = useState<State>({
-		method: DNI,
+		method: ApiUsers.USER,
 		id: "",
 		password: "",
 		remember: false,
@@ -54,9 +47,27 @@ export const Login = () => {
 
 	const onSubmit = useCallback(async () => {
 		setState({ ...state, isLoading: true });
-		await wait(1_000);
-		authorize("authorization bearer token");
-	}, [authorize, state]);
+		try {
+			const loginResponse = await ApiUsers.loginPsd2({
+				usuario: state.id,
+				deviceId: "🥓",
+				plataforma: "browser",
+				codigoPeticionOTP: null,
+				codigoOTPRecibido: "",
+				cotitular: false,
+				tipoLogin: state.method,
+				contrasena: state.password,
+			});
+			if (!loginResponse.loginFinalizadoDto) {
+				throw new Error(loginResponse.usuariosEnum);
+			}
+
+			setLoginResponse(loginResponse.loginFinalizadoDto);
+		} catch (error: any) {
+			alert(`Login error: ${error.message}`);
+			setState({ ...state, isLoading: false });
+		}
+	}, [setLoginResponse, state]);
 
 	return (
 		<ResponsiveLayout>
@@ -72,7 +83,12 @@ export const Login = () => {
 						name="user"
 						value={state.method}
 						disabled={state.isLoading}
-						options={[DNI, NIF, PASSPORT, USER].map((method) => ({
+						options={[
+							ApiUsers.DNI,
+							ApiUsers.NIE,
+							ApiUsers.PASSPORT,
+							ApiUsers.USER,
+						].map((method) => ({
 							value: method,
 							text: method,
 						}))}

@@ -8,7 +8,8 @@
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"prettier": "prettier -l **/*.ts **/*.tsx **/*.json **/*.html",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"start-proxy": "node backend"
 	},
 	"dependencies": {
 		"@vanilla-extract/css": "^1.9.2",
@@ -24,10 +25,12 @@
 		"@typescript-eslint/parser": "^5.44.0",
 		"@vanilla-extract/vite-plugin": "^3.7.0",
 		"@vitejs/plugin-react": "^2.2.0",
+		"axios": "^1.2.0",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-react": "^7.31.11",
 		"eslint-plugin-react-hooks": "^4.6.0",
+		"express": "^4.18.2",
 		"prettier": "^2.8.0",
 		"typescript": "^4.6.4",
 		"vite": "^3.2.3"

@@ -1,19 +1,19 @@
 import { ResponsiveLayout } from "../../common/layout";
-import { useFetchProfile, useProfileState } from "../../profile-context";
-import { useSessionContext } from "../../session-context";
-import { Profile } from "./profile";
+import { useLoginContext } from "../../login-context";
 
 export const Dashboard = () => {
-	useFetchProfile();
-	const profileState = useProfileState();
-	const { logout } = useSessionContext();
+	const { completedLogin, logout } = useLoginContext();
+
+	if (!completedLogin) {
+		return "Get out of here 🚪";
+	}
+
+	const { nomUsuario } = completedLogin;
 
 	return (
 		<ResponsiveLayout>
 			<h2>Profile</h2>
-			{profileState.isLoading && "Loading..."}
-			{profileState.error}
-			{profileState.profile ? <Profile profile={profileState.profile} /> : null}
+			{nomUsuario}
 			<button onClick={logout}>Desconectar</button>
 		</ResponsiveLayout>
 	);
