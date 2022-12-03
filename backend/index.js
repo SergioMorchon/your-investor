@@ -37,7 +37,6 @@ app.all("*", async (request, response) => {
 	request.on("end", async () => {
 		try {
 			const body = chunks.join("");
-			console.log(">", request.method, url, request.body, headers);
 			const { data } = await axios.request({
 				url,
 				data: body,
@@ -45,8 +44,6 @@ app.all("*", async (request, response) => {
 				headers,
 				insecureHTTPParser: true,
 			});
-
-			console.log("<", data);
 
 			response.json(data);
 		} catch (e) {
