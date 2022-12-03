@@ -12,7 +12,7 @@ export const setAuthorizationToken = (authorizationToken: string | null) => {
 export const callApi = (
 	path: string,
 	{
-		body = {},
+		body,
 		method,
 	}: {
 		body?: any;
@@ -20,7 +20,7 @@ export const callApi = (
 	}
 ): Promise<any> =>
 	fetch(`http://localhost:3001/myinvestor-server/rest/${path}`, {
-		body: JSON.stringify(body),
+		body: body ? JSON.stringify(body) : null,
 		method,
 		headers: {
 			accept: "application/json",

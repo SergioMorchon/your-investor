@@ -36,6 +36,7 @@ const useGetPersistedLoginState = () => {
 	const stateRef = useRef<ApiUsers.CompletedLogin | null>(
 		persistedCompletedLogin && JSON.parse(persistedCompletedLogin)
 	);
+	setAuthorizationToken(stateRef.current?.token ?? null);
 	useEffect(() => {
 		if (!persistedCompletedLogin) {
 			return;

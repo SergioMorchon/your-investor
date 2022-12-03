@@ -26,6 +26,7 @@
 		"@vanilla-extract/vite-plugin": "^3.7.0",
 		"@vitejs/plugin-react": "^2.2.0",
 		"axios": "^1.2.0",
+		"cors": "^2.8.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-react": "^7.31.11",

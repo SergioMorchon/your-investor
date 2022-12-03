@@ -1,5 +1,7 @@
 import axios from "axios";
 import express from "express";
+import cors from "cors";
+
 const defaultheaders = {
 	"Accept-Encoding": "compress",
 	dnt: "1",
@@ -16,6 +18,8 @@ const defaultheaders = {
 };
 
 const app = express();
+// Needed for fetch preflight OPTIONS when GET with headers
+app.options("*", cors());
 
 app.all("*", async (request, response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
