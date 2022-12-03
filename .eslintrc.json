@@ -3,6 +3,11 @@
 		"browser": true,
 		"es2021": true
 	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
@@ -19,6 +24,7 @@
 	},
 	"plugins": ["react", "@typescript-eslint"],
 	"rules": {
-		"react-hooks/exhaustive-deps": "error"
+		"react-hooks/exhaustive-deps": "error",
+		"@typescript-eslint/no-explicit-any": "off"
 	}
 }

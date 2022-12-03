@@ -101,6 +101,18 @@ export const SubmitInput = ({ children, disabled }: SubmitInputProps) => (
 	/>
 );
 
+type ButtonProps = {
+	children: string;
+	disabled?: boolean;
+	onPress: () => void;
+};
+
+export const Button = ({ onPress, children, disabled }: ButtonProps) => (
+	<button className={styles.button} onClick={onPress} disabled={disabled}>
+		{children}
+	</button>
+);
+
 type FormProps = {
 	children: React.ReactNode;
 	onSubmit: () => Promise<void>;

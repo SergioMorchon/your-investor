@@ -68,8 +68,8 @@ export const LoginContextProvider = ({ children }: Props) => {
 
 	const setCompletedLogin = useCallback(
 		(completedLogin: ApiUsers.CompletedLogin) => {
-			setState(completedLogin);
 			setAuthorizationToken(completedLogin.token);
+			setState(completedLogin);
 		},
 		[]
 	);

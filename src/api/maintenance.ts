@@ -13,4 +13,4 @@ export interface MaintenanceStatus {
 }
 
 export const checkMaintenance = (): Promise<MaintenanceStatus> =>
-	callApi("public/mantenimientos/check-mantenimiento");
+	callApi("public/mantenimientos/check-mantenimiento", { method: "get" });
