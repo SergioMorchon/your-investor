@@ -19,7 +19,7 @@ export const callApi = (
 		method: "get" | "post";
 	}
 ): Promise<any> =>
-	fetch(`http://localhost:3001/myinvestor-server/rest/${path}`, {
+	fetch(`http://${location.hostname}:3001/myinvestor-server/rest/${path}`, {
 		body: body ? JSON.stringify(body) : null,
 		method,
 		headers: {

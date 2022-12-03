@@ -47,10 +47,9 @@ app.all("*", async (request, response) => {
 
 			response.json(data);
 		} catch (e) {
-			console.error(e);
+			console.error(e.code);
 			response.statusCode = e?.response?.status ?? 500;
 			response.statusMessage = e?.response?.statusText ?? "Error";
-			console.error(response.statusMessage, response.statusCode);
 			response.send();
 		}
 	});
