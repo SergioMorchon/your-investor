@@ -11,40 +11,40 @@ type UsuariosEnum = "USUARIO_EXISTE_CPERF" | "USUARIO_NO_EXISTE" | string;
 
 export interface CompletedLogin {
 	/** "0" */
-	readonly codigoRespuesta: string;
+	readonly codigoRespuesta: "0" | "-1" | string;
 	/** "Proceso Finalizado Correctamente. " */
 	readonly descripcion: string;
-	readonly token: string;
-	readonly usuario: string;
+	readonly token: string | null;
+	readonly usuario: string | null;
 	/** "SERGIO" */
-	readonly nomUsuario: string;
+	readonly nomUsuario: string | null;
 	/** "MORCHÓN" */
-	readonly apeUsuario: string;
-	readonly nifUsuario: string;
+	readonly apeUsuario: string | null;
+	readonly nifUsuario: string | null;
 	/** "01" */
-	readonly codTipoDocumento: string;
-	readonly idUsuario: number;
+	readonly codTipoDocumento: string | null;
+	readonly idUsuario: number | null;
 	/** "USUARIO_EXISTE_CPERF" */
-	readonly usuariosEnum: UsuariosEnum;
+	readonly usuariosEnum: UsuariosEnum | null;
 	/** "sergio.morchon@outlook.com" */
-	readonly email: string;
+	readonly email: string | null;
 	/** "2.121.7-pro" */
-	readonly numVersionWeb: string;
+	readonly numVersionWeb: string | null;
 	/** null */
 	readonly identificadorDispositivoFavorito: any | null;
 	/** false */
-	readonly tieneTokenUrbanitae: boolean;
+	readonly tieneTokenUrbanitae: boolean | null;
 	/** null */
 	readonly emailUrbanitae: any | null;
 	/** null */
 	readonly usuarioUrbanitae: any | null;
 	/** "es" */
-	readonly codIdioma: string;
+	readonly codIdioma: string | null;
 }
 
-type OTPType = "SMS" | string;
+type OtpType = "SMS" | string;
 
-interface OTPRequest {
+export interface OtpRequest {
 	/* "0" */
 	readonly codigoRespuesta: string;
 	/* "PROCESO FINALIZADO CON ÉXITO" */
@@ -54,7 +54,7 @@ interface OTPRequest {
 	/* "QPZ2PMDC" */
 	readonly codigoPeticionOtp: string;
 	/* "SMS" */
-	readonly medioEnvioOtpEnum: OTPType;
+	readonly medioEnvioOtpEnum: OtpType;
 	/* "******000 */
 	readonly contactoCliente: string;
 }
@@ -73,7 +73,7 @@ export interface LoginResponse {
 	readonly loginFinalizadoDto: CompletedLogin | null;
 	readonly fechaUltimoKYC: "16/04/2021" | null;
 	readonly riesgoKYCMayor100: false | null;
-	readonly generarOTPPSD2ResponseDto: OTPRequest | null;
+	readonly generarOTPPSD2ResponseDto: OtpRequest | null;
 }
 
 export const loginPsd2 = (body: {
@@ -86,9 +86,19 @@ export const loginPsd2 = (body: {
 	tipoLogin: LoginType;
 	usuario: string;
 }): Promise<LoginResponse> =>
-	callApi("public/usuarios/login-psd2", {
-		body,
-	});
+	callApi("public/usuarios/login-psd2", { body, method: "post" });
+
+export const validateOtp = (body: {
+	usuario: string;
+	deviceId: string;
+	plataforma: string;
+	codigoPeticionOTP: string;
+	codigoOTPRecibido: string;
+	cotitular: boolean;
+	tipoLogin: LoginType;
+	contrasena: string;
+}): Promise<CompletedLogin> =>
+	callApi("public/usuarios/validar-otp", { body, method: "post" });
 
 interface LogoutResponse {
 	/** "0" */
@@ -98,4 +108,4 @@ interface LogoutResponse {
 }
 
 export const logout = (): Promise<LogoutResponse> =>
-	callApi("protected/usuarios/logout");
+	callApi("protected/usuarios/logout", { method: "post" });

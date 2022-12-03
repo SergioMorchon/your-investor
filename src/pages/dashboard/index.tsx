@@ -5,7 +5,7 @@ export const Dashboard = () => {
 	const { completedLogin, logout } = useLoginContext();
 
 	if (!completedLogin) {
-		return "Get out of here 🚪";
+		return <>Get out of here 🚪</>;
 	}
 
 	const { nomUsuario } = completedLogin;

@@ -14,41 +14,44 @@ import * as ApiUsers from "../api/users";
 
 const useRedirectToDashboardWhenLoggedIn = () => {
 	const navigate = useNavigate();
-	const { completedLogin: loginResponse } = useLoginContext();
+	const { completedLogin } = useLoginContext();
 	useEffect(() => {
-		if (loginResponse) {
+		if (completedLogin) {
 			navigate(dashboard, {
 				replace: true,
 			});
 		}
-	}, [loginResponse, navigate]);
+	}, [completedLogin, navigate]);
 };
 
 type State = {
 	method: ApiUsers.LoginType;
 	id: string;
 	password: string;
+	otp: string;
 	remember: boolean;
 	isLoading: boolean;
 	error?: string;
 };
 
 export const Login = () => {
-	const { setCompletedLogin: setLoginResponse } = useLoginContext();
+	const { setCompletedLogin } = useLoginContext();
+	const [loginResponse, setLoginResponse] =
+		useState<ApiUsers.LoginResponse | null>(null);
 	const [state, setState] = useState<State>({
 		method: ApiUsers.USER,
 		id: "",
 		password: "",
+		otp: "",
 		remember: false,
 		isLoading: false,
 	});
-
 	useRedirectToDashboardWhenLoggedIn();
 
-	const onSubmit = useCallback(async () => {
+	const handleLogin = useCallback(async () => {
 		setState({ ...state, isLoading: true });
 		try {
-			const loginResponse = await ApiUsers.loginPsd2({
+			const response = await ApiUsers.loginPsd2({
 				usuario: state.id,
 				deviceId: "🥓",
 				plataforma: "browser",
@@ -58,25 +61,71 @@ export const Login = () => {
 				tipoLogin: state.method,
 				contrasena: state.password,
 			});
-			if (!loginResponse.loginFinalizadoDto) {
-				throw new Error(loginResponse.usuariosEnum);
+			setLoginResponse(response);
+			setState({ ...state, isLoading: false });
+
+			if (response.loginFinalizadoDto) {
+				setCompletedLogin(response.loginFinalizadoDto);
+				return;
 			}
 
-			setLoginResponse(loginResponse.loginFinalizadoDto);
+			if (!response.generarOTPPSD2ResponseDto) {
+				throw new Error(response.usuariosEnum);
+			}
 		} catch (error: any) {
 			alert(`Login error: ${error.message}`);
+		} finally {
 			setState({ ...state, isLoading: false });
 		}
-	}, [setLoginResponse, state]);
+	}, [setCompletedLogin, state]);
+
+	const handleOtpLogin = useCallback(async () => {
+		if (!loginResponse?.generarOTPPSD2ResponseDto) {
+			return;
+		}
+
+		setState({ ...state, isLoading: true });
+		try {
+			const response = await ApiUsers.validateOtp({
+				usuario: state.id,
+				deviceId: "🥓",
+				plataforma: "browser",
+				codigoPeticionOTP:
+					loginResponse.generarOTPPSD2ResponseDto.codigoPeticionOtp,
+				codigoOTPRecibido: state.otp,
+				cotitular: false,
+				tipoLogin: state.method,
+				contrasena: state.password,
+			});
+			setState({ ...state, isLoading: false });
+
+			if (response.token) {
+				setCompletedLogin(response);
+				return;
+			}
+
+			throw new Error(response.descripcion);
+		} catch (error: any) {
+			alert(`Login error: ${error.message}`);
+		} finally {
+			setState({ ...state, isLoading: false });
+		}
+	}, [loginResponse?.generarOTPPSD2ResponseDto, setCompletedLogin, state]);
 
 	return (
 		<ResponsiveLayout>
 			<h2>Iniciar sesión</h2>
 			<p>
-				¡Bienvenido a YourInvestor! Introduyce tus datos para entrar a tu banca
+				¡Bienvenido a YourInvestor! Introduce tus datos para entrar a tu banca
 				online.
 			</p>
-			<Form onSubmit={onSubmit}>
+			<Form
+				onSubmit={
+					loginResponse?.generarOTPPSD2ResponseDto
+						? handleOtpLogin
+						: handleLogin
+				}
+			>
 				<Stack space={16}>
 					<SelectInput
 						label="Usuario"
@@ -112,6 +161,17 @@ export const Login = () => {
 						onChange={(password) => setState({ ...state, password })}
 						required
 					/>
+					{loginResponse?.generarOTPPSD2ResponseDto && (
+						<TextInput
+							label="Código SMS"
+							name="otp"
+							value={state.otp}
+							disabled={state.isLoading}
+							type="number"
+							onChange={(otp) => setState({ ...state, otp })}
+							required
+						/>
+					)}
 					<CheckboxInput
 						label="Recordar usuario"
 						value={state.remember}

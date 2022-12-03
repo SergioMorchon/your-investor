@@ -13,13 +13,15 @@ export const callApi = (
 	path: string,
 	{
 		body = {},
+		method,
 	}: {
 		body?: any;
-	} = {}
+		method: "get" | "post";
+	}
 ): Promise<any> =>
 	fetch(`http://localhost:3001/myinvestor-server/rest/${path}`, {
 		body: JSON.stringify(body),
-		method: "post",
+		method,
 		headers: {
 			accept: "application/json",
 			...(token && {

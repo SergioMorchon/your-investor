@@ -11,7 +11,7 @@ type InputProps<Value extends string | boolean = string> = {
 };
 
 type TextInputProps = InputProps & {
-	type?: "text" | "password";
+	type?: "text" | "password" | "number";
 	password?: boolean;
 };
 

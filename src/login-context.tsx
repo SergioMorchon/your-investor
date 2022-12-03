@@ -32,8 +32,10 @@ const usePersistLoginResponse = (
 	}, [completedLogin]);
 
 const useGetPersistedLoginState = () => {
-	const stateRef = useRef<ApiUsers.CompletedLogin | null>(null);
 	const persistedCompletedLogin = localStorage.getItem(COMPLETED_LOGIN_KEY);
+	const stateRef = useRef<ApiUsers.CompletedLogin | null>(
+		persistedCompletedLogin && JSON.parse(persistedCompletedLogin)
+	);
 	useEffect(() => {
 		if (!persistedCompletedLogin) {
 			return;
@@ -56,10 +58,11 @@ export const LoginContextProvider = ({ children }: Props) => {
 	usePersistLoginResponse(state);
 
 	const logout = useCallback(async () => {
-		const response = await ApiUsers.logout();
+		ApiUsers.logout().then((response) => {
+			alert(response.respuesta);
+		});
 		setState(null);
 		setAuthorizationToken(null);
-		alert(response.respuesta);
 	}, []);
 
 	const setCompletedLogin = useCallback(
