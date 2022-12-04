@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ResponsiveLayout, Stack } from "../common/layout";
-import { useLoginContext } from "../login-context";
+import * as Persistence from "../persistence";
 import * as ResumeApi from "../api/resume";
+import * as UsersApi from "../api/users";
 import { Button } from "../common/fields";
 import { BrandHeading } from "../common/brand-heading";
+import { useNavigate } from "react-router-dom";
+import { login } from "../paths";
 
 const useAccounts = () => {
 	const [state, setState] = useState<ResumeApi.Accounts | null>(null);
@@ -15,23 +18,26 @@ const useAccounts = () => {
 	return state;
 };
 
+const useLogout = () => {
+	const navigate = useNavigate();
+	return useCallback(() => {
+		UsersApi.logout();
+		Persistence.clear();
+		navigate(login, {
+			replace: true,
+		});
+	}, [navigate]);
+};
+
 export const Dashboard = () => {
-	const { completedLogin, logout } = useLoginContext();
 	const accounts = useAccounts();
-
-	if (!completedLogin) {
-		return <>Get out of here 🚪</>;
-	}
-
-	const { nomUsuario, numVersionWeb } = completedLogin;
+	const logout = useLogout();
 
 	return (
 		<>
 			<BrandHeading />
-			Versión {numVersionWeb}
 			<ResponsiveLayout>
 				<h2>Dashboard</h2>
-				<h3>{nomUsuario}</h3>
 				<Stack space={32}>
 					{accounts && (
 						<Stack space={16}>

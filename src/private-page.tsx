@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { login } from "./paths";
-import { useLoginContext } from "./login-context";
+import { getSessionToken } from "./persistence";
 
 type Props = {
 	children: React.ReactElement;
 };
 
 export const PrivateContent = ({ children }: Props) =>
-	useLoginContext().completedLogin ? children : <Navigate to={login} replace />;
+	getSessionToken() ? children : <Navigate to={login} replace />;

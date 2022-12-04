@@ -9,20 +9,20 @@ import {
 } from "../common/fields";
 import { ResponsiveLayout, Stack } from "../common/layout";
 import { dashboard } from "../paths";
-import { useLoginContext } from "../login-context";
+import { getSessionToken, setSessionToken } from "../persistence";
 import * as ApiUsers from "../api/users";
 import { BrandHeading } from "../common/brand-heading";
 
 const useRedirectToDashboardWhenLoggedIn = () => {
 	const navigate = useNavigate();
-	const { completedLogin } = useLoginContext();
+	const token = getSessionToken();
 	useEffect(() => {
-		if (completedLogin) {
+		if (token) {
 			navigate(dashboard, {
 				replace: true,
 			});
 		}
-	}, [completedLogin, navigate]);
+	}, [token, navigate]);
 };
 
 type State = {
@@ -36,7 +36,6 @@ type State = {
 };
 
 export const Login = () => {
-	const { setCompletedLogin } = useLoginContext();
 	const [loginResponse, setLoginResponse] =
 		useState<ApiUsers.LoginResponse | null>(null);
 	const [state, setState] = useState<State>({
@@ -66,7 +65,7 @@ export const Login = () => {
 			setState({ ...state, isLoading: false });
 
 			if (response.loginFinalizadoDto) {
-				setCompletedLogin(response.loginFinalizadoDto);
+				setSessionToken(response.loginFinalizadoDto.token);
 				return;
 			}
 
@@ -78,7 +77,7 @@ export const Login = () => {
 		} finally {
 			setState({ ...state, isLoading: false });
 		}
-	}, [setCompletedLogin, state]);
+	}, [state]);
 
 	const handleOtpLogin = useCallback(async () => {
 		if (!loginResponse?.generarOTPPSD2ResponseDto) {
@@ -101,7 +100,7 @@ export const Login = () => {
 			setState({ ...state, isLoading: false });
 
 			if (response.token) {
-				setCompletedLogin(response);
+				setSessionToken(response.token);
 				return;
 			}
 
@@ -111,7 +110,7 @@ export const Login = () => {
 		} finally {
 			setState({ ...state, isLoading: false });
 		}
-	}, [loginResponse?.generarOTPPSD2ResponseDto, setCompletedLogin, state]);
+	}, [loginResponse?.generarOTPPSD2ResponseDto, state]);
 
 	return (
 		<>

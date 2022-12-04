@@ -1,15 +1,11 @@
+import { getSessionToken } from "./persistence";
+
 export const wait = (timespan: number) =>
 	new Promise((resolve) => {
 		setTimeout(resolve, timespan);
 	});
 
-let token: string | null = null;
-
-export const setAuthorizationToken = (authorizationToken: string | null) => {
-	token = authorizationToken;
-};
-
-export const callApi = (
+export const callApi = async (
 	path: string,
 	{
 		body,
@@ -18,20 +14,25 @@ export const callApi = (
 		body?: any;
 		method: "get" | "post";
 	}
-): Promise<any> =>
-	fetch(`http://${location.hostname}:3001/myinvestor-server/rest/${path}`, {
-		body: body ? JSON.stringify(body) : null,
-		method,
-		headers: {
-			accept: "application/json",
-			...(token && {
-				authorization: `: Basic ${token}:`,
-			}),
-		},
-	}).then((response) => {
-		if (response.status && response.status >= 200 && response.status < 300) {
-			return response.json();
+): Promise<any> => {
+	const token = getSessionToken();
+	const response = await fetch(
+		`http://${location.hostname}:3001/myinvestor-server/rest/${path}`,
+		{
+			body: body ? JSON.stringify(body) : null,
+			method,
+			headers: {
+				accept: "application/json",
+				...(token && {
+					authorization: `: Basic ${token}:`,
+				}),
+			},
 		}
+	);
 
-		throw new Error(response.statusText);
-	});
+	if (response.status && response.status >= 200 && response.status < 300) {
+		return response.json();
+	}
+
+	throw new Error(response.statusText);
+};
