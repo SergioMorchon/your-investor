@@ -5,6 +5,7 @@ import { Login } from "./pages/login";
 import { dashboard, login } from "./paths";
 import { Dashboard } from "./pages/dashboard";
 import { PrivateContent } from "./private-page";
+import { ThemeContextProvider } from "./theme-context-provider";
 
 const router = createBrowserRouter([
 	{
@@ -22,5 +23,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<RouterProvider router={router} />
+	<ThemeContextProvider>
+		<RouterProvider router={router} />
+	</ThemeContextProvider>
 );
