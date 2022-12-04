@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+import { vars } from "../vars.css";
 
 const base = style({
 	border: "solid 1px #9e9e9e",
@@ -26,8 +27,8 @@ export const checkboxInput = style([
 
 export const button = style({
 	padding: "12px 5px",
-	background: "#1c6fc9",
-	color: "#fff",
+	background: vars.colors.button.primary.background,
+	color: vars.colors.button.primary.text,
 	borderRadius: 24,
 	border: "none",
 	cursor: "pointer",
