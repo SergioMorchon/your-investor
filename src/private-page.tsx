@@ -1,5 +1,4 @@
 import { Navigate } from "react-router-dom";
-import { login } from "./paths";
 import { getSessionToken } from "./persistence";
 
 type Props = {
@@ -7,4 +6,4 @@ type Props = {
 };
 
 export const PrivateContent = ({ children }: Props) =>
-	getSessionToken() ? children : <Navigate to={login} replace />;
+	getSessionToken() ? children : <Navigate to="/login" replace />;

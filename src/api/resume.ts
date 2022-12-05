@@ -78,7 +78,7 @@ export interface SecurityAccount {
 	readonly idRenta: null;
 }
 
-export interface ReirementAccount {
+export interface RetirementAccount {
 	readonly aliasCuenta: null;
 	readonly uuidCuenta: null;
 	readonly codigoCuentaExterna: null;
@@ -104,7 +104,7 @@ export interface ReirementAccount {
 export interface Accounts {
 	readonly cuentasEfectivo: readonly CashAccount[];
 	readonly cuentasValores: readonly SecurityAccount[];
-	readonly cuentasPensiones: readonly ReirementAccount[];
+	readonly cuentasPensiones: readonly RetirementAccount[];
 }
 export const accounts = (): Promise<Accounts> =>
 	callApi("protected/resume/cuentas", { method: "get" });

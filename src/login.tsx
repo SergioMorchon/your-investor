@@ -6,19 +6,18 @@ import {
 	SelectInput,
 	SubmitInput,
 	TextInput,
-} from "../common/fields";
-import { ResponsiveLayout, Stack } from "../common/layout";
-import { dashboard } from "../paths";
-import { getSessionToken, setSessionToken } from "../persistence";
-import * as ApiUsers from "../api/users";
-import { BrandHeading } from "../common/brand-heading";
+} from "./common/fields";
+import { ResponsiveLayout, Stack } from "./common/layout";
+import { getSessionToken, setSessionToken } from "./persistence";
+import * as ApiUsers from "./api/users";
+import { BrandHeading } from "./common/brand-heading";
 
 const useRedirectToDashboardWhenLoggedIn = () => {
 	const navigate = useNavigate();
 	const token = getSessionToken();
 	useEffect(() => {
 		if (token) {
-			navigate(dashboard, {
+			navigate("/", {
 				replace: true,
 			});
 		}

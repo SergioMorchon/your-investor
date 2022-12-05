@@ -1,23 +1,23 @@
 import ReactDOM from "react-dom/client";
 import "./main.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Login } from "./pages/login";
-import { dashboard, login } from "./paths";
-import { Dashboard } from "./pages/dashboard";
+import { Login } from "./login";
+import { App } from "./app";
 import { PrivateContent } from "./private-page";
 import { ThemeContextProvider } from "./theme-context-provider";
 
 const router = createBrowserRouter([
 	{
-		path: dashboard,
+		index: true,
+		path: "/*",
 		element: (
 			<PrivateContent>
-				<Dashboard />
+				<App />
 			</PrivateContent>
 		),
 	},
 	{
-		path: login,
+		path: "/login",
 		element: <Login />,
 	},
 ]);

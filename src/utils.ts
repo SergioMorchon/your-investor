@@ -36,3 +36,10 @@ export const callApi = async (
 
 	throw new Error(response.statusText);
 };
+
+export const formatMoney = (amount: number) =>
+	new Intl.NumberFormat("es-ES", {
+		style: "currency",
+		useGrouping: true,
+		currency: "EUR",
+	}).format(amount);
