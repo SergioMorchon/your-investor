@@ -4,5 +4,5 @@ import { vars } from "./vars.css";
 globalStyle("html, body", {
 	margin: 0,
 	background: vars.colors.background,
-	color: vars.colors.text.primary,
+	color: vars.colors.textPrimary,
 });

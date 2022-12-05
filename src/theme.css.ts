@@ -1,25 +1,15 @@
 export const lightColors = {
 	background: "#000",
-	text: {
-		primary: "#fff",
-	},
-	button: {
-		primary: {
-			background: "#1c6fc9",
-			text: "#fff",
-		},
-	},
+	textPrimary: "#fff",
+	buttonPrimaryBackground: "#1c6fc9",
+	buttonPrimary: "#fff",
+	controlDisabledBackground: "#ddd",
 };
 
 export const darkColors = {
 	background: "#fff",
-	text: {
-		primary: "#333",
-	},
-	button: {
-		primary: {
-			background: "#1c6fc9",
-			text: "#fff",
-		},
-	},
+	textPrimary: "#333",
+	buttonPrimaryBackground: "#1c6fc9",
+	buttonPrimary: "#fff",
+	controlDisabledBackground: "#ddd",
 };

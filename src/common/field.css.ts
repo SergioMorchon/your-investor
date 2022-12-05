@@ -11,6 +11,9 @@ const base = style({
 			outline: "none",
 		},
 	},
+	":disabled": {
+		backgroundColor: vars.colors.controlDisabledBackground,
+	},
 });
 
 export const textInput = base;
@@ -26,10 +29,14 @@ export const checkboxInput = style([
 ]);
 
 export const button = style({
-	padding: "12px 5px",
-	background: vars.colors.button.primary.background,
-	color: vars.colors.button.primary.text,
+	padding: "8px 16px",
+	background: vars.colors.buttonPrimaryBackground,
+	color: vars.colors.buttonPrimary,
 	borderRadius: 24,
 	border: "none",
 	cursor: "pointer",
+
+	":disabled": {
+		backgroundColor: vars.colors.controlDisabledBackground,
+	},
 });

@@ -1,5 +1,5 @@
 const DESKTOP_WIDTH = 600;
-const DESKTOP_HEIGHT = 600;
+const DESKTOP_HEIGHT = 800;
 
 export const mobile =
 	`only screen and (max-width: ${DESKTOP_WIDTH - 1}px), ` +
