@@ -72,32 +72,36 @@ export interface LoginResponse {
 	readonly codigoPeticionOTP: any | null;
 	readonly loginFinalizadoDto: CompletedLogin | null;
 	readonly fechaUltimoKYC: "16/04/2021" | null;
-	readonly riesgoKYCMayor100: false | null;
+	readonly riesgoKYCMayor100: boolean | null;
 	readonly generarOTPPSD2ResponseDto: OtpRequest | null;
 }
 
-export const loginPsd2 = (body: {
-	codigoOTPRecibido: string;
-	codigoPeticionOTP: string | null;
-	contrasena: string;
-	cotitular: boolean;
-	deviceId: string;
-	plataforma: string;
-	tipoLogin: LoginType;
-	usuario: string;
-}): Promise<LoginResponse> =>
+export const loginPsd2 = (
+	body: Readonly<{
+		codigoOTPRecibido: string;
+		codigoPeticionOTP: string | null;
+		contrasena: string;
+		cotitular: boolean;
+		deviceId: string;
+		plataforma: string;
+		tipoLogin: LoginType;
+		usuario: string;
+	}>
+): Promise<LoginResponse> =>
 	callApi("public/usuarios/login-psd2", { body, method: "post" });
 
-export const validateOtp = (body: {
-	usuario: string;
-	deviceId: string;
-	plataforma: string;
-	codigoPeticionOTP: string;
-	codigoOTPRecibido: string;
-	cotitular: boolean;
-	tipoLogin: LoginType;
-	contrasena: string;
-}): Promise<CompletedLogin> =>
+export const validateOtp = (
+	body: Readonly<{
+		usuario: string;
+		deviceId: string;
+		plataforma: string;
+		codigoPeticionOTP: string;
+		codigoOTPRecibido: string;
+		cotitular: boolean;
+		tipoLogin: LoginType;
+		contrasena: string;
+	}>
+): Promise<CompletedLogin> =>
 	callApi("public/usuarios/validar-otp", { body, method: "post" });
 
 interface LogoutResponse {
@@ -109,3 +113,173 @@ interface LogoutResponse {
 
 export const logout = (): Promise<LogoutResponse> =>
 	callApi("protected/usuarios/logout", { method: "post" });
+
+export interface LoggedInUserData {
+	readonly codigoRespuesta: null;
+	readonly descripcion: null;
+	readonly token: null;
+	readonly usuario: string;
+	readonly nomUsuario: string;
+	readonly apeUsuario: string;
+	readonly nifUsuario: string;
+	readonly codTipoDocumento: "01" | string;
+	readonly idUsuario: number;
+	readonly usuariosEnum: null;
+	readonly email: string;
+	readonly numVersionWeb: string;
+	readonly identificadorDispositivoFavorito: null;
+	readonly tieneTokenUrbanitae: boolean;
+	readonly emailUrbanitae: null;
+	readonly usuarioUrbanitae: null;
+	readonly codIdioma: "es" | string;
+}
+
+export const loggedInUserData = (): Promise<LoggedInUserData> =>
+	callApi("protected/usuarios/datos-usuario-logeado", { method: "get" });
+
+interface PersonalDataDto {
+	readonly type: "DatosPersonalesDto" | string;
+	readonly email: string;
+	readonly emailTitular: null;
+	readonly emailCo: null;
+	readonly codigoPromocion: null;
+	readonly tlfMovil: null;
+	readonly dniNif: string;
+	readonly codigoTipoDocumento: "01" | string;
+	readonly fechaCaducidadDocumento: string;
+	readonly vigenciaPermanente: boolean;
+	readonly nombre: string;
+	readonly primerApellido: string;
+	readonly segundoApellido: string;
+	readonly hombre: boolean;
+	readonly mujer: boolean;
+	readonly sexo: "H" | string;
+	readonly codigoSexo: "H" | string;
+	readonly fechaNacimiento: string;
+	readonly paisNacimiento: string;
+	readonly codigoPaisNacimiento: "011" | string;
+	readonly telefonoContacto: string;
+	readonly telefonoAdicionalContacto: null;
+	readonly prefijoTelefono: string;
+	readonly confirmacionEmail: null;
+	readonly lugarNacimiento: string;
+	readonly telefonaAdicionalContacto: null;
+}
+
+interface TaxationAddress {
+	readonly pais: string;
+	readonly codigoPais: string;
+	readonly provincia: string;
+	readonly codigoProvincia: string;
+	readonly localidad: string;
+	readonly tipoVia: string;
+	readonly codigoTipoVia: string;
+	readonly direccion: string;
+	readonly numero: string;
+	readonly pisoPuerta: string;
+	readonly cp: string;
+	readonly labelProvincia: string;
+	readonly labelTipoVia: string;
+}
+
+interface TaxationData {
+	readonly type: "DatosFiscalesDto";
+	readonly email: null;
+	readonly emailTitular: null;
+	readonly emailCo: null;
+	readonly codigoPromocion: null;
+	readonly tlfMovil: null;
+	readonly paisNacionalidad: string;
+	readonly codigoPaisNacionalidad: "011" | string;
+	readonly estadoCivil: string;
+	readonly codigoEstadoCivil: "S" | string;
+	readonly tipoActividad: string;
+	readonly codigoTipoActividad: string;
+	readonly nombreSector: string;
+	readonly codigoSector: string;
+	readonly profesion: string;
+	readonly codigoProfesion: string;
+	readonly direccionFiscalDto: TaxationAddress;
+	readonly sector: string;
+}
+
+interface PostalAddress {
+	readonly pais: string;
+	readonly codigoPais: string;
+	readonly provincia: string;
+	readonly codigoProvincia: string;
+	readonly localidad: string;
+	readonly tipoVia: string;
+	readonly codigoTipoVia: string;
+	readonly direccion: string;
+	readonly numero: string;
+	readonly pisoPuerta: string;
+	readonly cp: string;
+	readonly labelProvincia: string;
+	readonly labelTipoVia: string;
+}
+
+interface KnowYourClientForm {
+	readonly type: "FormularioKYCDto";
+	readonly email: null;
+	readonly emailTitular: null;
+	readonly emailCo: null;
+	readonly codigoPromocion: null;
+	readonly tlfMovil: null;
+	readonly tipoActividad: string;
+	readonly codigoTipoActividad: string;
+	readonly rangosVentasCuentaPropia: null;
+	readonly empresaEmpleadora: string;
+	readonly funcionEmpresa: string;
+	readonly estimacionIngresosRango: string;
+	readonly sinActividad: string;
+	readonly responsabilidadaPublica: boolean;
+	readonly rentasTrabajo: boolean;
+	readonly inferior300k: null;
+	readonly importeAproximadoInversionInicial: number;
+	readonly residenciaFiscalSpain: boolean;
+	readonly idSectorKyc: number;
+	readonly idActividadKyc: number;
+	readonly nomSectorKyc: string;
+	readonly nomActividadKyc: string;
+	readonly tipoActividadAnterior: null;
+	readonly nombreComercialEmpresa: null;
+	readonly usPerson: boolean;
+}
+
+interface ContactData {
+	readonly type: string;
+	readonly email: string;
+	readonly emailTitular: string;
+	readonly emailCo: null;
+	readonly codigoPromocion: null;
+	readonly tlfMovil: string;
+	readonly prefijoTelefono: string;
+	readonly recibirInfoGrupo: boolean;
+}
+
+interface PrivacyTerms {
+	readonly type: "LegalPoliticaPrivacidadDto";
+	readonly email: null;
+	readonly emailTitular: null;
+	readonly emailCo: null;
+	readonly codigoPromocion: null;
+	readonly tlfMovil: null;
+	readonly solicitarDatosTesoreria: boolean;
+}
+
+export interface ClientData {
+	readonly datosPersonalesDto: PersonalDataDto;
+	datosFiscalesDto: TaxationData;
+	direccionCorrespondencia: PostalAddress;
+	formularioKYCDto: KnowYourClientForm;
+	datosContactoDto: ContactData;
+	ibanCuentaOrigenFondo: string;
+	legalPoliticaPrivacidadDto: PrivacyTerms;
+	codRespuesta: "0" | string;
+	respuesta: null;
+	datosCompletos: boolean;
+}
+
+export const clientData = (): Promise<ClientData> =>
+	callApi("protected/usuarios/datos-cliente", { method: "get" });

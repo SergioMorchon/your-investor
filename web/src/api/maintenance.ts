@@ -1,15 +1,15 @@
 import { callApi } from "../utils";
 
 export interface MaintenanceStatus {
-	codRespuesta: string;
-	enMantenimeinto: boolean;
-	hora_fin: any | null;
-	hora_inicio: any | null;
-	mantenimientoAppAndroid: boolean;
-	mantenimientoAppIphone: boolean;
-	mantenimientoWeb: boolean;
-	mensaje: any | null;
-	plataforma: any | null;
+	readonly codRespuesta: string;
+	readonly enMantenimeinto: boolean;
+	readonly hora_fin: any | null;
+	readonly hora_inicio: any | null;
+	readonly mantenimientoAppAndroid: boolean;
+	readonly mantenimientoAppIphone: boolean;
+	readonly mantenimientoWeb: boolean;
+	readonly mensaje: any | null;
+	readonly plataforma: any | null;
 }
 
 export const checkMaintenance = (): Promise<MaintenanceStatus> =>
