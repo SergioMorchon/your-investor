@@ -1,4 +1,5 @@
 const SESSION_TOKEN_KEY = "session-token";
+const DEVICE_ID_KEY = "device-id";
 
 export const setSessionToken = (token: string | null) =>
 	token
@@ -6,5 +7,26 @@ export const setSessionToken = (token: string | null) =>
 		: localStorage.removeItem(SESSION_TOKEN_KEY);
 
 export const getSessionToken = () => localStorage.getItem(SESSION_TOKEN_KEY);
+
+const uuidTemplate = "10000000-1000-4000-8000-100000000000";
+
+const uuidv4 = () =>
+	uuidTemplate.replace(/[018]/g, (c) =>
+		(
+			Number(c) ^
+			(crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4)))
+		).toString(16)
+	);
+
+export const getDeviceId = () => {
+	const deviceId = localStorage.getItem(DEVICE_ID_KEY);
+	if (!deviceId) {
+		const newDeviceId = uuidv4();
+		localStorage.setItem(DEVICE_ID_KEY, newDeviceId);
+		return newDeviceId;
+	}
+
+	return deviceId;
+};
 
 export const clear = () => localStorage.clear();

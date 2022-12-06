@@ -10,7 +10,7 @@ const useLogout = () => {
 	const navigate = useNavigate();
 	return useCallback(() => {
 		UsersApi.logout();
-		Persistence.clear();
+		Persistence.setSessionToken(null);
 		navigate(0);
 	}, [navigate]);
 };

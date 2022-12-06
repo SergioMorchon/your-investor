@@ -8,7 +8,7 @@ import {
 	TextInput,
 } from "./common/fields";
 import { ResponsiveLayout, Stack } from "./common/layout";
-import { getSessionToken, setSessionToken } from "./persistence";
+import { getDeviceId, getSessionToken, setSessionToken } from "./persistence";
 import * as ApiUsers from "./api/users";
 import { BrandHeading } from "./common/brand-heading";
 
@@ -24,7 +24,7 @@ const useRedirectToDashboardWhenLoggedIn = () => {
 	}, [token, navigate]);
 };
 
-type State = {
+type State = Readonly<{
 	method: ApiUsers.LoginType;
 	id: string;
 	password: string;
@@ -32,7 +32,7 @@ type State = {
 	remember: boolean;
 	isLoading: boolean;
 	error?: string;
-};
+}>;
 
 export const Login = () => {
 	const [loginResponse, setLoginResponse] =
@@ -52,7 +52,7 @@ export const Login = () => {
 		try {
 			const response = await ApiUsers.loginPsd2({
 				usuario: state.id,
-				deviceId: "🥓",
+				deviceId: getDeviceId(),
 				plataforma: "browser",
 				codigoPeticionOTP: null,
 				codigoOTPRecibido: "",
@@ -87,7 +87,7 @@ export const Login = () => {
 		try {
 			const response = await ApiUsers.validateOtp({
 				usuario: state.id,
-				deviceId: "🥓",
+				deviceId: getDeviceId(),
 				plataforma: "browser",
 				codigoPeticionOTP:
 					loginResponse.generarOTPPSD2ResponseDto.codigoPeticionOtp,
