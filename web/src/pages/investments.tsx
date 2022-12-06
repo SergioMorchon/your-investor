@@ -70,18 +70,19 @@ export const Investments = () => {
 																			</dd>
 																			<dt>Valor de mercado</dt>
 																			<dd>
-																				{formatMoney(indexedInvestment.importe)}
-																			</dd>
-																			<dt>Rentabilidad</dt>
-																			<dd>
-																				{formatPercentage(
-																					indexedInvestment.rentabilidadTotal
-																				)}{" "}
+																				{formatMoney(indexedInvestment.importe)}{" "}
 																				(
 																				{
 																					indexedInvestment.fechaActualizacionRentabilidad
 																				}
 																				)
+																			</dd>
+																			<dt>Rentabilidad</dt>
+																			<dd>
+																				{formatPercentage(
+																					indexedInvestment.rentabilidadTotal /
+																						100
+																				)}
 																			</dd>
 																		</li>
 																	)
