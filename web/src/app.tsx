@@ -6,6 +6,7 @@ import { Cash } from "./pages/cash";
 import * as styles from "./app.css";
 import { ResumeContextProvider } from "./resume-context";
 import { UserContextProvider } from "./user-context";
+import { InvestmentsContextProvider } from "./investments-context";
 
 const sections = [
 	{
@@ -34,15 +35,17 @@ export const App = () => (
 			<BrandHeading />
 			<ResumeContextProvider>
 				<UserContextProvider>
-					<Routes>
-						{sections.map(({ path, element }) => (
-							<Route key={path} path={path} element={element} />
-						))}
-						<Route
-							path="/"
-							element={<Navigate to={sections[0].path} replace />}
-						/>
-					</Routes>
+					<InvestmentsContextProvider>
+						<Routes>
+							{sections.map(({ path, element }) => (
+								<Route key={path} path={path} element={element} />
+							))}
+							<Route
+								path="/"
+								element={<Navigate to={sections[0].path} replace />}
+							/>
+						</Routes>
+					</InvestmentsContextProvider>
 				</UserContextProvider>
 			</ResumeContextProvider>
 		</div>

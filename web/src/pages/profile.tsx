@@ -5,7 +5,6 @@ import * as UsersApi from "../api/users";
 import { Button } from "../common/fields";
 import { PageContent } from "../common/page-content";
 import { useUserContext } from "../user-context";
-import { Stack } from "../common/layout";
 
 const useLogout = () => {
 	const navigate = useNavigate();
@@ -19,11 +18,8 @@ const useLogout = () => {
 export const Profile = () => {
 	const logout = useLogout();
 	const { loggedInUserData, clientData, error } = useUserContext();
-	if (error) {
-		return <p>{error}</p>;
-	}
 
-	if (!loggedInUserData) {
+	if (!error && !loggedInUserData) {
 		return <p>Cargando...</p>;
 	}
 
