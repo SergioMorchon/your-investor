@@ -43,3 +43,9 @@ export const formatMoney = (amount: number) =>
 		useGrouping: true,
 		currency: "EUR",
 	}).format(amount);
+
+export const formatPercentage = (percentage: number) =>
+	new Intl.NumberFormat("es-ES", {
+		style: "percent",
+		maximumFractionDigits: 2,
+	}).format(percentage);
