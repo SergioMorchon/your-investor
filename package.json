@@ -11,14 +11,19 @@
 		"prettier": "prettier -l **/*.ts **/*.tsx **/*.json **/*.html",
 		"lint": "eslint .",
 		"check-code": "npm run lint && npm run prettier",
-		"start-proxy": "node backend"
+		"start:proxy": "node backend/proxy",
+		"start:web": "node backend/web"
 	},
 	"dependencies": {
 		"@vanilla-extract/css": "^1.9.2",
 		"@vanilla-extract/dynamic": "^2.0.3",
+		"axios": "^1.2.0",
+		"cors": "^2.8.5",
+		"express": "^4.18.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.4.3"
+		"react-router-dom": "^6.4.3",
+		"serve-favicon": "^2.5.0"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.24",
@@ -27,13 +32,10 @@
 		"@typescript-eslint/parser": "^5.44.0",
 		"@vanilla-extract/vite-plugin": "^3.7.0",
 		"@vitejs/plugin-react": "^2.2.0",
-		"axios": "^1.2.0",
-		"cors": "^2.8.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-react": "^7.31.11",
 		"eslint-plugin-react-hooks": "^4.6.0",
-		"express": "^4.18.2",
 		"prettier": "^2.8.0",
 		"typescript": "^4.6.4",
 		"vite": "^3.2.3"
