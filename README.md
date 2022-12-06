@@ -12,14 +12,15 @@ _Vite, vanilla-extract, react, react-router, express, axios and a bit of reverse
 1. Run `node backend/proxy` and **leave it running on the background**.
    This is needed to bypass the web requests from the web client to the MyInvestor backend.
    The web app will talk with this backend.
-1. Run `yarn dev` to start the frontend.
+1. From `/web`, run `yarn dev` to start the frontend.
    Open the URL printed on the console.
 
 ## Build and deploy
 
-1. Run `yarn build`.
-1. Start the proxy with `yarn start:proxy`.
-1. Start the web with `yarn start:web`.
+1. From `/web`, run `yarn build`.
+1. From `/backend`:
+   1. Start the proxy with `yarn start:proxy`.
+   1. Start the web with `yarn start:web ../www`.
 
 ## Login
 
