@@ -55,7 +55,7 @@ app.all("*", async (request, response) => {
 	});
 });
 
-const port = 3_001;
+const port = process.env.PORT ?? 3_001;
 
 app.listen(port);
 console.log(`Listening on port ${port}`);

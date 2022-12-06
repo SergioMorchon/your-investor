@@ -16,8 +16,11 @@ jobs:
           node-version: 18
           cache: yarn
       - run: yarn install --immutable
-      - run: yarn build
+      - run: yarn workspace web run build
       - uses: actions/upload-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: app
+          path: |
+            www
+            backend/**/*.js
+            backend/package.json
