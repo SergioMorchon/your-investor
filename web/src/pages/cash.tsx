@@ -6,7 +6,6 @@ export const Cash = () => {
 	const accountsState = useAccounts();
 
 	if (accountsState.error) {
-		console.error(accountsState.error);
 		return <p>{accountsState.error.message}</p>;
 	}
 

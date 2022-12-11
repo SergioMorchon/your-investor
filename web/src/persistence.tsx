@@ -36,8 +36,8 @@ export const localStorageProvider = () => {
 		JSON.parse(localStorage.getItem(CACHE_KEY) || "[]").forEach(
 			([key, value]: [string, any]) => map.set(key, value)
 		);
-	} catch (e) {
-		console.error("Error while loading previous cache", e);
+	} catch {
+		// eslint-disable-next-line no-empty
 	}
 
 	window.addEventListener("beforeunload", () => {
