@@ -1,15 +1,15 @@
+import { useInvestments } from "../api/investments";
+import { useAccounts } from "../api/resume";
 import { Stack } from "../common/layout";
 import { PageContent } from "../common/page-content";
-import { useInvestmentsContext } from "../investments-context";
-import { useResumeContext } from "../resume-context";
 import { formatMoney, formatPercentage } from "../utils";
 
 export const Investments = () => {
-	const { accounts, error: resumeError } = useResumeContext();
-	const { investments, error: investmentsError } = useInvestmentsContext();
+	const { data: accounts, error: resumeError } = useAccounts();
+	const { data: investments, error: investmentsError } = useInvestments();
 
 	if (resumeError || investmentsError) {
-		return <p>{resumeError ?? investmentsError}</p>;
+		return <p>{(resumeError ?? investmentsError)?.message}</p>;
 	}
 
 	if (!accounts && !investments) {

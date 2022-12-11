@@ -1,4 +1,4 @@
-import { callApi } from "../utils";
+import useSWR from "swr";
 
 export type AccountType = "EFECTIVO" | "VALORES" | "PENSIONES" | string;
 
@@ -106,5 +106,6 @@ export interface Accounts {
 	readonly cuentasValores: readonly SecurityAccount[];
 	readonly cuentasPensiones: readonly RetirementAccount[];
 }
-export const accounts = (): Promise<Accounts> =>
-	callApi("protected/resume/cuentas", { method: "get" });
+
+export const useAccounts = () =>
+	useSWR<Accounts, Error>({ path: "protected/resume/cuentas", method: "get" });

@@ -1,20 +1,14 @@
 import { getSessionToken } from "./persistence";
 
-export const wait = (timespan: number) =>
-	new Promise((resolve) => {
-		setTimeout(resolve, timespan);
-	});
-
-export const callApi = async (
-	path: string,
-	{
-		body,
-		method,
-	}: {
-		body?: any;
-		method: "get" | "post";
-	}
-): Promise<any> => {
+export const callApi = async ({
+	path,
+	method,
+	body,
+}: {
+	path: string;
+	method: "get" | "post";
+	body?: any;
+}): Promise<any> => {
 	const token = getSessionToken();
 	const response = await fetch(
 		`http://${location.hostname}:3001/myinvestor-server/rest/${path}`,

@@ -1,3 +1,4 @@
+import useSWR from "swr";
 import { callApi } from "../utils";
 
 export const DNI = "DNI" as const;
@@ -88,7 +89,7 @@ export const loginPsd2 = (
 		usuario: string;
 	}>
 ): Promise<LoginResponse> =>
-	callApi("public/usuarios/login-psd2", { body, method: "post" });
+	callApi({ path: "public/usuarios/login-psd2", method: "post", body });
 
 export const validateOtp = (
 	body: Readonly<{
@@ -102,7 +103,7 @@ export const validateOtp = (
 		contrasena: string;
 	}>
 ): Promise<CompletedLogin> =>
-	callApi("public/usuarios/validar-otp", { body, method: "post" });
+	callApi({ path: "public/usuarios/validar-otp", method: "post", body });
 
 interface LogoutResponse {
 	/** "0" */
@@ -112,7 +113,7 @@ interface LogoutResponse {
 }
 
 export const logout = (): Promise<LogoutResponse> =>
-	callApi("protected/usuarios/logout", { method: "post" });
+	callApi({ path: "protected/usuarios/logout", method: "post" });
 
 export interface LoggedInUserData {
 	readonly codigoRespuesta: null;
@@ -134,8 +135,11 @@ export interface LoggedInUserData {
 	readonly codIdioma: "es" | string;
 }
 
-export const loggedInUserData = (): Promise<LoggedInUserData> =>
-	callApi("protected/usuarios/datos-usuario-logeado", { method: "get" });
+export const useLoggedInUserData = () =>
+	useSWR<LoggedInUserData, Error>({
+		path: "protected/usuarios/datos-usuario-logeado",
+		method: "get",
+	});
 
 interface PersonalDataDto {
 	readonly type: "DatosPersonalesDto" | string;
@@ -281,5 +285,8 @@ export interface ClientData {
 	datosCompletos: boolean;
 }
 
-export const clientData = (): Promise<ClientData> =>
-	callApi("protected/usuarios/datos-cliente", { method: "get" });
+export const useClientData = () =>
+	useSWR<ClientData, Error>({
+		path: "protected/usuarios/datos-cliente",
+		method: "get",
+	});

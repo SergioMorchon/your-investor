@@ -1,5 +1,6 @@
 const SESSION_TOKEN_KEY = "session-token";
 const DEVICE_ID_KEY = "device-id";
+const CACHE_KEY = "cache";
 
 export const setSessionToken = (token: string | null) =>
 	token
@@ -29,4 +30,19 @@ export const getDeviceId = () => {
 	return deviceId;
 };
 
-export const clear = () => localStorage.clear();
+export const localStorageProvider = () => {
+	const map = new Map();
+	try {
+		JSON.parse(localStorage.getItem(CACHE_KEY) || "[]").forEach(
+			([key, value]: [string, any]) => map.set(key, value)
+		);
+	} catch (e) {
+		console.error("Error while loading previous cache", e);
+	}
+
+	window.addEventListener("beforeunload", () => {
+		localStorage.setItem(CACHE_KEY, JSON.stringify(Array.from(map.entries())));
+	});
+
+	return map;
+};

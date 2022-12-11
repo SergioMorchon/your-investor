@@ -1,22 +1,23 @@
+import { useAccounts } from "../api/resume";
 import { PageContent } from "../common/page-content";
-import { useResumeContext } from "../resume-context";
 import { formatMoney } from "../utils";
 
 export const Cash = () => {
-	const { accounts, error } = useResumeContext();
+	const accountsState = useAccounts();
 
-	if (error) {
-		return <p>{error}</p>;
+	if (accountsState.error) {
+		console.error(accountsState.error);
+		return <p>{accountsState.error.message}</p>;
 	}
 
-	if (!accounts) {
+	if (!accountsState.data) {
 		return <p>Cargando...</p>;
 	}
 
 	return (
 		<PageContent title="Efectivo">
 			<ol>
-				{accounts.cuentasEfectivo.map((account) => (
+				{accountsState.data.cuentasEfectivo.map((account) => (
 					<li key={account.idCuenta}>
 						{[
 							account.aliasCuenta ?? account.codigoCuenta,
