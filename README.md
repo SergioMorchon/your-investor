@@ -2,7 +2,7 @@
 
 This is a personal project to play with different technologies.
 
-_Vite, vanilla-extract, react, react-router, express, axios and a bit of reverse engineering on MyInvestor._
+_[Vite](https://vitejs.dev/), [vanilla-extract](https://vanilla-extract.style/), [react](https://reactjs.org/), [react-router](https://github.com/remix-run/react-router), [SWR](https://swr.vercel.app/), [express](http://expressjs.com/), [axios](https://axios-http.com/) and a bit of reverse engineering of MyInvestor services._
 
 ![Nothing to see here](./nothing-to-see-here.gif)
 

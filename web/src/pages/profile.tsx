@@ -4,20 +4,26 @@ import * as Persistence from "../persistence";
 import * as UsersApi from "../api/users";
 import { Button } from "../common/fields";
 import { PageContent } from "../common/page-content";
-import { useUserContext } from "../user-context";
+import { useSWRConfig } from "swr";
 
 const useLogout = () => {
 	const navigate = useNavigate();
+	const { mutate } = useSWRConfig();
 	return useCallback(() => {
 		UsersApi.logout();
+		mutate(() => true, undefined, { revalidate: false });
 		Persistence.setSessionToken(null);
 		navigate(0);
-	}, [navigate]);
+	}, [navigate, mutate]);
 };
 
 export const Profile = () => {
 	const logout = useLogout();
-	const { loggedInUserData, clientData, error } = useUserContext();
+	const { data: loggedInUserData, error: loggedInUserDataError } =
+		UsersApi.useLoggedInUserData();
+	const { data: clientData, error: clientDataError } = UsersApi.useClientData();
+
+	const error = loggedInUserDataError ?? clientDataError;
 
 	if (!error && !loggedInUserData) {
 		return <p>Cargando...</p>;
@@ -25,7 +31,7 @@ export const Profile = () => {
 
 	return (
 		<PageContent title="Perfil">
-			{error}
+			{error?.message}
 			{!loggedInUserData && !error && "Cargando..."}
 			{loggedInUserData && clientData && (
 				<dl>

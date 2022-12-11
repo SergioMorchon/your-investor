@@ -1,4 +1,4 @@
-import { callApi } from "../utils";
+import useSWR from "swr";
 
 interface InvestmentDto {
 	readonly idCuenta: number;
@@ -103,15 +103,13 @@ export interface Investment {
 
 export type Investments = readonly Investment[];
 
-export const investments = (params?: {
+export const useInvestments = (params?: {
 	onlyWallets?: boolean;
 	onlyActive?: boolean;
-}): Promise<Investments> =>
-	callApi(
-		`protected/inversiones?soloCarteras=${
+}) =>
+	useSWR<Investments, Error>({
+		path: `protected/inversiones?soloCarteras=${
 			params?.onlyWallets ?? false
 		}&soloActivas=${params?.onlyActive ?? false}`,
-		{
-			method: "get",
-		}
-	);
+		method: "get",
+	});

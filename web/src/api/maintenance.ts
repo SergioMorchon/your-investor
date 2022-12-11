@@ -1,4 +1,4 @@
-import { callApi } from "../utils";
+import useSWR from "swr";
 
 export interface MaintenanceStatus {
 	readonly codRespuesta: string;
@@ -12,5 +12,8 @@ export interface MaintenanceStatus {
 	readonly plataforma: any | null;
 }
 
-export const checkMaintenance = (): Promise<MaintenanceStatus> =>
-	callApi("public/mantenimientos/check-mantenimiento", { method: "get" });
+export const useCheckMaintenance = () =>
+	useSWR<MaintenanceStatus, Error>({
+		path: "public/mantenimientos/check-mantenimiento",
+		method: "get",
+	});
